@@ -1,0 +1,17 @@
+<header class="main-header">
+  <h1>🎓 Alumni Association Platform</h1>
+
+  <% if (typeof user !== "undefined") { %>
+    <!-- Logged-in header -->
+    <nav>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/directory">Directory</a>
+      <a href="/jobs">Jobs</a>
+      <a href="/donate">Donate</a>
+      <a href="/admin/events">Events</a>
+      <a href="/logout" class="logout">Logout</a>
+    </nav>
+  <% } %>
+
+  <hr>
+</header>

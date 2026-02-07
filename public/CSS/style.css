@@ -1,0 +1,204 @@
+/* =========================
+   GLOBAL RESET & BASE
+========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8fafc;
+  color: #1f2933;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+/* =========================
+   HEADINGS
+========================= */
+h1 {
+  font-size: 30px;
+}
+
+h2 {
+  margin: 20px 0 15px;
+  color: #1e3a8a;
+}
+
+h3 {
+  margin: 20px 0 10px;
+  color: #2563eb;
+}
+
+/* =========================
+   HEADER & NAVBAR
+========================= */
+header {
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  padding: 18px 25px;
+  border-radius: 10px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  color: white;
+}
+
+nav {
+  margin-top: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  margin-right: 15px;
+}
+
+nav a:hover {
+  color: #f59e0b;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.hero p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* =========================
+   LINKS
+========================= */
+a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   FORMS
+========================= */
+form {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  margin: 25px auto;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 11px;
+  margin-top: 6px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button {
+  margin-top: 12px;
+  background: #2563eb;
+  color: white;
+  padding: 11px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1e3a8a;
+}
+
+/* =========================
+   TABLES
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+  padding: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+table th {
+  background: #2563eb;
+  color: white;
+}
+
+table tr:nth-child(even) {
+  background-color: #f1f5f9;
+}
+
+table tr:hover {
+  background-color: #e0ecff;
+}
+
+/* =========================
+   DASHBOARD LIST
+========================= */
+ul {
+  list-style: none;
+  margin-top: 15px;
+}
+
+ul li {
+  margin: 10px 0;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+  background: #1e3a8a;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  margin-top: 50px;
+  border-radius: 10px;
+}
+
+footer p {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+hr {
+  display: none;
+}

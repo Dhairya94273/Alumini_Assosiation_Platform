@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <%- include("partials/header") %>
+  <link rel="stylesheet" href="/css/style.css">
+
+<h2>Job Openings</h2>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Description</th>
+  </tr>
+
+  <% if (jobs.length === 0) { %>
+    <tr>
+      <td colspan="4">No job openings available</td>
+    </tr>
+  <% } else { %>
+    <% jobs.forEach(j => { %>
+      <tr>
+        <td><%= j.title %></td>
+        <td><%= j.company %></td>
+        <td><%= j.location %></td>
+        <td><%= j.description %></td>
+      </tr>
+    <% }) %>
+  <% } %>
+</table>
+
+<%- include("partials/footer") %>
+
+</body>
+</html>

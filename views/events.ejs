@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include("partials/header") %>
+
+<h2>Alumni Events & Reunions</h2>
+
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Date</th>
+    <th>Location</th>
+    <th>Description</th>
+  </tr>
+
+  <% if (events.length === 0) { %>
+    <tr>
+      <td colspan="4">No events available</td>
+    </tr>
+  <% } %>
+
+  <% events.forEach(e => { %>
+    <tr>
+      <td><%= e.event_name %></td>
+      <td><%= e.event_date %></td>
+      <td><%= e.location %></td>
+      <td><%= e.description %></td>
+    </tr>
+  <% }) %>
+</table>
+
+<h3>Add Event (Admin)</h3>
+
+<form method="POST" action="/admin/events/add">
+  <input name="event_name" placeholder="Event Name" required><br><br>
+  <input type="date" name="event_date" required><br><br>
+  <input name="location" placeholder="Location" required><br><br>
+  <textarea name="description"></textarea><br><br>
+  <button>Add Event</button>
+</form>
+
+<%- include("partials/footer") %>
+
+</body>
+</html>
