@@ -3,20 +3,353 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Support Our Mission | Make a Donation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include("partials/header") %>
-<h2>Donation Portal</h2>
 
-<form method="POST" action="/donate">
-  <input type="number" name="amount" placeholder="Amount (₹)" required><br><br>
-  <input type="text" name="purpose" placeholder="Purpose" required><br><br>
-  <button>Donate</button>
-</form>
+  <!-- Donate Header -->
+  <section class="donate-header">
+    <h1>Support Our Mission</h1>
+    <p>Your generosity helps us build a stronger alumni community and support the next generation</p>
+  </section>
 
-<%- include("partials/footer") %>
+  <!-- Impact Section -->
+  <section class="impact-section">
+    <h2>Your Impact Matters</h2>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h3>Scholarships</h3>
+        <p>Support deserving students with full and partial scholarships</p>
+        <span class="impact-amount">₹5,000+</span>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">
+          <i class="fas fa-building"></i>
+        </div>
+        <h3>Campus Development</h3>
+        <p>Modernize facilities and learning infrastructure</p>
+        <span class="impact-amount">₹10,000+</span>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">
+          <i class="fas fa-flask"></i>
+        </div>
+        <h3>Research & Innovation</h3>
+        <p>Fund groundbreaking research and innovation projects</p>
+        <span class="impact-amount">₹15,000+</span>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <h3>Student Support</h3>
+        <p>Provide mentorship and career guidance programs</p>
+        <span class="impact-amount">₹3,000+</span>
+      </div>
+    </div>
+  </section>
 
+  <!-- Donation Tiers -->
+  <section class="donation-tiers">
+    <h2>Choose Your Donation Tier</h2>
+    <div class="tiers-grid">
+      <div class="tier-card tier-silver" data-amount="5000">
+        <div class="tier-badge">Silver</div>
+        <div class="tier-amount">₹5,000</div>
+        <div class="tier-description">Get started with a meaningful gift</div>
+        <ul class="tier-benefits">
+          <li><i class="fas fa-check-circle"></i> Certificate of Appreciation</li>
+          <li><i class="fas fa-check-circle"></i> Annual Report</li>
+          <li><i class="fas fa-check-circle"></i> Alumni Newsletter</li>
+        </ul>
+        <button class="tier-select-btn">Select</button>
+      </div>
+
+      <div class="tier-card tier-gold" data-amount="10000">
+        <div class="tier-badge">Gold</div>
+        <div class="tier-amount">₹10,000</div>
+        <div class="tier-description">Make a significant impact</div>
+        <ul class="tier-benefits">
+          <li><i class="fas fa-check-circle"></i> Premium Certificate</li>
+          <li><i class="fas fa-check-circle"></i> Annual Report</li>
+          <li><i class="fas fa-check-circle"></i> Alumni Newsletter</li>
+          <li><i class="fas fa-check-circle"></i> Campus Tour Invite</li>
+        </ul>
+        <button class="tier-select-btn">Select</button>
+      </div>
+
+      <div class="tier-card tier-platinum" data-amount="25000">
+        <div class="tier-badge featured">Featured</div>
+        <div class="tier-amount">₹25,000</div>
+        <div class="tier-description">Become a major benefactor</div>
+        <ul class="tier-benefits">
+          <li><i class="fas fa-check-circle"></i> Platinum Plaque</li>
+          <li><i class="fas fa-check-circle"></i> Annual Report</li>
+          <li><i class="fas fa-check-circle"></i> Alumni Newsletter</li>
+          <li><i class="fas fa-check-circle"></i> VIP Campus Tour</li>
+          <li><i class="fas fa-check-circle"></i> Recognition on Website</li>
+        </ul>
+        <button class="tier-select-btn">Select</button>
+      </div>
+
+      <div class="tier-card tier-custom" data-amount="custom">
+        <div class="tier-badge">Custom</div>
+        <div class="tier-amount">Your Amount</div>
+        <div class="tier-description">Choose your own contribution</div>
+        <ul class="tier-benefits">
+          <li><i class="fas fa-check-circle"></i> Personalized Benefits</li>
+          <li><i class="fas fa-check-circle"></i> Tax Deductible</li>
+          <li><i class="fas fa-check-circle"></i>100% Secure</li>
+          <li><i class="fas fa-check-circle"></i> Flexible Options</li>
+        </ul>
+        <button class="tier-select-btn">Select</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Donation Form -->
+  <section class="donation-form-section">
+    <div class="form-container">
+      <h2>Complete Your Donation</h2>
+      
+      <form method="POST" action="/donate" class="donation-form">
+        <!-- Donation Amount Section -->
+        <div class="form-group full-width">
+          <label for="amount">Donation Amount</label>
+          <div class="amount-input-wrapper">
+            <span class="currency">₹</span>
+            <input 
+              type="number" 
+              id="amount"
+              name="amount" 
+              class="amount-input"
+              placeholder="0" 
+              min="1000"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Quick Amount Buttons -->
+        <div class="quick-amounts">
+          <button type="button" class="quick-btn" data-amount="5000">₹5K</button>
+          <button type="button" class="quick-btn" data-amount="10000">₹10K</button>
+          <button type="button" class="quick-btn" data-amount="25000">₹25K</button>
+          <button type="button" class="quick-btn" data-amount="50000">₹50K</button>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input 
+              type="text" 
+              id="name"
+              name="name" 
+              placeholder="Your name"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+              type="email" 
+              id="email"
+              name="email" 
+              placeholder="your@email.com"
+              required
+            >
+          </div>
+        </div>
+
+        <!-- Donation Purpose -->
+        <div class="form-group full-width">
+          <label for="purpose">Donation Purpose</label>
+          <select id="purpose" name="purpose" required>
+            <option value="">Select a purpose...</option>
+            <option value="Scholarships">Scholarships</option>
+            <option value="Campus Development">Campus Development</option>
+            <option value="Research & Innovation">Research & Innovation</option>
+            <option value="Student Support">Student Support</option>
+            <option value="General Fund">General Fund</option>
+          </select>
+        </div>
+
+        <!-- Message -->
+        <div class="form-group full-width">
+          <label for="message">Message (Optional)</label>
+          <textarea 
+            id="message"
+            name="message" 
+            placeholder="Share why you're supporting us..."
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Donation Frequency -->
+        <div class="frequency-group">
+          <label>Donation Frequency</label>
+          <div class="frequency-options">
+            <label class="radio-label">
+              <input type="radio" name="frequency" value="one-time" checked>
+              <span>One-time</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="frequency" value="monthly">
+              <span>Monthly</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="frequency" value="annual">
+              <span>Annual</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Tax Declaration -->
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" name="tax" required>
+            <span>This donation is tax deductible in India (80G certified)</span>
+          </label>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-donate">
+          <i class="fas fa-heart"></i> Donate Now
+        </button>
+
+        <p class="security-note">
+          <i class="fas fa-lock"></i> Your payment information is secure and encrypted
+        </p>
+      </form>
+    </div>
+
+    <!-- Donation Stats Sidebar -->
+    <div class="donation-stats-box">
+      <h3>Campaign Progress</h3>
+      <div class="stat-progress">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 68%;"></div>
+        </div>
+        <div class="progress-labels">
+          <span class="progress-current">₹34,00,000</span>
+          <span class="progress-goal">₹50,00,000</span>
+        </div>
+      </div>
+
+      <div class="donation-highlight">
+        <div class="highlight-stat">
+          <div class="highlight-number">2,156</div>
+          <div class="highlight-label">Donors</div>
+        </div>
+        <div class="highlight-stat">
+          <div class="highlight-number">₹34L</div>
+          <div class="highlight-label">Raised</div>
+        </div>
+      </div>
+
+      <div class="donor-testimonial">
+        <p>"Supporting our alma mater brings me joy alongside memories. This is my way of giving back!"</p>
+        <p class="testimonial-author">- THINK X</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="donation-faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-question">
+          <h4><i class="fas fa-question-circle"></i> Is my donation tax deductible?</h4>
+        </div>
+        <p class="faq-answer">Yes! We are 80G certified, making all donations tax deductible in India.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <h4><i class="fas fa-question-circle"></i> How will my donation be used?</h4>
+        </div>
+        <p class="faq-answer">Donations support scholarships, campus development, research, and student programs.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <h4><i class="fas fa-question-circle"></i> Can I make an anonymous donation?</h4>
+        </div>
+        <p class="faq-answer">Yes, you can request anonymity during the donation process.</p>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">
+          <h4><i class="fas fa-question-circle"></i> What payment methods are accepted?</h4>
+        </div>
+        <p class="faq-answer">We accept all major credit cards, UPI, net banking, and digital wallets.</p>
+      </div>
+    </div>
+  </section>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    const amountInput = document.getElementById('amount');
+    const purposeSelect = document.getElementById('purpose');
+    const quickBtns = document.querySelectorAll('.quick-btn');
+    const tierCards = document.querySelectorAll('.tier-card');
+    const donationForm = document.querySelector('.donation-form');
+
+    // Quick amount buttons
+    quickBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const amount = btn.getAttribute('data-amount');
+        amountInput.value = amount;
+        amountInput.focus();
+      });
+    });
+
+    // Tier selection
+    tierCards.forEach(card => {
+      const selectBtn = card.querySelector('.tier-select-btn');
+      selectBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const amount = card.getAttribute('data-amount');
+        if (amount !== 'custom') {
+          amountInput.value = amount;
+        } else {
+          amountInput.focus();
+        }
+        amountInput.focus();
+        window.scrollTo({ top: donationForm.offsetTop - 200, behavior: 'smooth' });
+      });
+
+      // Highlight selected card
+      card.addEventListener('click', () => {
+        tierCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+      });
+    });
+
+    // Form validation feedback
+    amountInput.addEventListener('change', () => {
+      if (amountInput.value < 1000) {
+        amountInput.value = '';
+        alert('Minimum donation amount is ₹1,000');
+      }
+    });
+
+    // Smooth scroll animation on load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.impact-card, .tier-card, .faq-item').forEach((el, index) => {
+        el.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+      });
+    });
+  </script>
 </body>
 </html>

@@ -3,39 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Job Portal | Career Opportunities</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include("partials/header") %>
-  <link rel="stylesheet" href="/css/style.css">
 
-<h2>Job Openings</h2>
+  <!-- Job Portal Header -->
+  <section class="jobs-header">
+    <h1>Career Opportunities</h1>
+    <p>Find your next dream job among <%= jobs ? jobs.length : 0 %> active positions</p>
+  </section>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Company</th>
-    <th>Location</th>
-    <th>Description</th>
-  </tr>
+  <!-- Search & Filter Section -->
+  <section class="jobs-controls">
+    <div class="search-container">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        id="jobSearchInput" 
+        class="search-input" 
+        placeholder="Search by job title, company, or skills..."
+      >
+      <button class="clear-search" id="clearJobSearchBtn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
 
-  <% if (jobs.length === 0) { %>
-    <tr>
-      <td colspan="4">No job openings available</td>
-    </tr>
-  <% } else { %>
-    <% jobs.forEach(j => { %>
-      <tr>
-        <td><%= j.title %></td>
-        <td><%= j.company %></td>
-        <td><%= j.location %></td>
-        <td><%= j.description %></td>
-      </tr>
-    <% }) %>
-  <% } %>
-</table>
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="jobLevelFilter">
+          <i class="fas fa-level-up-alt"></i> Job Level
+        </label>
+        <select id="jobLevelFilter" class="filter-select">
+          <option value="">All Levels</option>
+          <option value="Entry Level">Entry Level</option>
+          <option value="Mid Level">Mid Level</option>
+          <option value="Senior">Senior</option>
+          <option value="Executive">Executive</option>
+        </select>
+      </div>
 
-<%- include("partials/footer") %>
+      <div class="filter-group">
+        <label for="jobLocationFilter">
+          <i class="fas fa-map-marker-alt"></i> Location
+        </label>
+        <select id="jobLocationFilter" class="filter-select">
+          <option value="">All Locations</option>
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+          <option value="On-site">On-site</option>
+        </select>
+      </div>
 
+      <button class="reset-filters" id="resetJobFiltersBtn">
+        <i class="fas fa-redo"></i> Reset
+      </button>
+    </div>
+  </section>
+
+  <!-- Results Info -->
+  <div class="results-info">
+    <span id="jobResultCount">Showing <strong><%= jobs ? jobs.length : 0 %></strong> positions</span>
+  </div>
+
+  <!-- Jobs Grid -->
+  <section class="jobs-grid" id="jobsGrid">
+    <% if (jobs.length === 0) { %>
+      <div class="no-results" style="grid-column: 1 / -1;">
+        <div class="no-results-content">
+          <i class="fas fa-briefcase"></i>
+          <h3>No Jobs Available</h3>
+          <p>Check back soon for new opportunities!</p>
+        </div>
+      </div>
+    <% } else { %>
+      <% jobs.forEach((j, index) => { %>
+        <div class="job-card" data-title="<%= (j.title || '').toLowerCase() %>" data-company="<%= (j.company || '').toLowerCase() %>" data-location="<%= j.location || "On-site" %>">
+          
+          <div class="job-card-header">
+            <div class="company-badge">
+              <span class="company-initial"><%= (j.company || 'J').charAt(0).toUpperCase() %></span>
+            </div>
+            <div class="job-meta">
+              <h3 class="job-title"><%= j.title %></h3>
+              <p class="company-name"><%= j.company %></p>
+            </div>
+            <button class="save-job-btn" title="Save Job">
+              <i class="far fa-bookmark"></i>
+            </button>
+          </div>
+
+          <div class="job-description">
+            <p><%= j.description.substring(0, 150) %>...</p>
+          </div>
+
+          <div class="job-tags">
+            <span class="tag"><i class="fas fa-map-marker-alt"></i> <%= j.location || "On-site" %></span>
+            <span class="tag"><i class="fas fa-briefcase"></i> Full-time</span>
+            <span class="tag highlight"><i class="fas fa-dollar-sign"></i> Competitive</span>
+          </div>
+
+          <div class="job-card-footer">
+            <button class="btn-secondary" title="View Details">
+              <i class="fas fa-eye"></i> View Details
+            </button>
+            <button class="btn-primary" title="Apply Now">
+              <i class="fas fa-paper-plane"></i> Apply Now
+            </button>
+          </div>
+        </div>
+      <% }) %>
+    <% } %>
+  </section>
+
+  <!-- Job Stats -->
+  <section class="job-stats">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+      <div class="stat-info">
+        <div class="stat-number"><%= jobs ? jobs.length : 0 %></div>
+        <div class="stat-label">Active Jobs</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-building"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Hiring Companies</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-globe"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">30+</div>
+        <div class="stat-label">Locations</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">95%</div>
+        <div class="stat-label">Placement Rate</div>
+      </div>
+    </div>
+  </section>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    // Get all elements
+    const jobSearchInput = document.getElementById('jobSearchInput');
+    const jobLevelFilter = document.getElementById('jobLevelFilter');
+    const jobLocationFilter = document.getElementById('jobLocationFilter');
+    const clearJobSearchBtn = document.getElementById('clearJobSearchBtn');
+    const resetJobFiltersBtn = document.getElementById('resetJobFiltersBtn');
+    const jobsGrid = document.getElementById('jobsGrid');
+    const jobCards = document.querySelectorAll('.job-card');
+    const jobResultCount = document.getElementById('jobResultCount');
+
+    // Filter function
+    function filterJobs() {
+      const searchTerm = jobSearchInput.value.toLowerCase();
+      const selectedLevel = jobLevelFilter.value;
+      const selectedLocation = jobLocationFilter.value;
+      let visibleCount = 0;
+
+      jobCards.forEach(card => {
+        const title = card.getAttribute('data-title');
+        const company = card.getAttribute('data-company');
+        const location = card.getAttribute('data-location');
+
+        const matchesSearch = title.includes(searchTerm) || company.includes(searchTerm);
+        const matchesLevel = !selectedLevel || card.innerText.includes(selectedLevel);
+        const matchesLocation = !selectedLocation || location === selectedLocation;
+
+        if (matchesSearch && matchesLevel && matchesLocation) {
+          card.style.display = 'block';
+          card.classList.add('fade-in');
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      jobResultCount.innerHTML = `Showing <strong>${visibleCount}</strong> position${visibleCount !== 1 ? 's' : ''}`;
+    }
+
+    // Event listeners
+    jobSearchInput.addEventListener('input', filterJobs);
+    jobLevelFilter.addEventListener('change', filterJobs);
+    jobLocationFilter.addEventListener('change', filterJobs);
+
+    // Clear search
+    clearJobSearchBtn.addEventListener('click', () => {
+      jobSearchInput.value = '';
+      filterJobs();
+      jobSearchInput.focus();
+    });
+
+    // Reset all filters
+    resetJobFiltersBtn.addEventListener('click', () => {
+      jobSearchInput.value = '';
+      jobLevelFilter.value = '';
+      jobLocationFilter.value = '';
+      filterJobs();
+    });
+
+    // Show/hide clear button
+    jobSearchInput.addEventListener('input', () => {
+      clearJobSearchBtn.style.display = jobSearchInput.value ? 'block' : 'none';
+    });
+
+    // Save job functionality
+    document.querySelectorAll('.save-job-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.target.closest('.save-job-btn').classList.toggle('saved');
+        if (e.target.closest('.save-job-btn').classList.contains('saved')) {
+          e.target.classList.remove('far');
+          e.target.classList.add('fas');
+        } else {
+          e.target.classList.add('far');
+          e.target.classList.remove('fas');
+        }
+      });
+    });
+
+    // Initial animation
+    window.addEventListener('load', () => {
+      jobCards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('fade-in');
+        }, index * 50);
+      });
+    });
+  </script>
 </body>
 </html>

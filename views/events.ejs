@@ -3,49 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Events & Reunions | Alumni Community</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include("partials/header") %>
 
-<h2>Alumni Events & Reunions</h2>
+  <section class="events-header">
+    <h1>Alumni Events & Reunions</h1>
+    <p>Connect, celebrate, and strengthen bonds with classmates and fellow alumni</p>
+  </section>
 
-<table>
-  <tr>
-    <th>Event</th>
-    <th>Date</th>
-    <th>Location</th>
-    <th>Description</th>
-  </tr>
+  <section class="events-controls">
+    <div class="search-container">
+      <i class="fas fa-search"></i>
+      <input type="text" id="eventSearchInput" class="search-input" placeholder="Search by event name or location...">
+      <button class="clear-search" id="clearEventSearchBtn"><i class="fas fa-times"></i></button>
+    </div>
 
-  <% if (events.length === 0) { %>
-    <tr>
-      <td colspan="4">No events available</td>
-    </tr>
-  <% } %>
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="eventTypeFilter"><i class="fas fa-tag"></i> Event Type</label>
+        <select id="eventTypeFilter" class="filter-select">
+          <option value="">All Types</option>
+          <option value="Reunion">Reunion</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Webinar">Webinar</option>
+          <option value="Networking">Networking</option>
+          <option value="Social">Social</option>
+        </select>
+      </div>
 
-  <% events.forEach(e => { %>
-    <tr>
-      <td><%= e.event_name %></td>
-      <td><%= e.event_date %></td>
-      <td><%= e.location %></td>
-      <td><%= e.description %></td>
-    </tr>
-  <% }) %>
-</table>
+      <div class="filter-group">
+        <label for="eventStatusFilter"><i class="fas fa-calendar-check"></i> Status</label>
+        <select id="eventStatusFilter" class="filter-select">
+          <option value="">All Events</option>
+          <option value="upcoming">Upcoming</option>
+          <option value="past">Past Events</option>
+        </select>
+      </div>
 
-<h3>Add Event (Admin)</h3>
+      <button class="reset-filters" id="resetEventFiltersBtn"><i class="fas fa-redo"></i> Reset</button>
+    </div>
+  </section>
 
-<form method="POST" action="/admin/events/add">
-  <input name="event_name" placeholder="Event Name" required><br><br>
-  <input type="date" name="event_date" required><br><br>
-  <input name="location" placeholder="Location" required><br><br>
-  <textarea name="description"></textarea><br><br>
-  <button>Add Event</button>
-</form>
+  <div class="results-info"><span id="eventResultCount">Showing <strong><%= events ? events.length : 0 %></strong> events</span></div>
 
-<%- include("partials/footer") %>
+  <section class="events-grid" id="eventsGrid">
+    <% if (!events || events.length === 0) { %>
+      <div class="no-results" style="grid-column: 1 / -1;"><div class="no-results-content"><i class="fas fa-calendar"></i><h3>No Events Found</h3><p>Check back soon for upcoming alumni events!</p></div></div>
+    <% } else { %>
+      <% events.forEach((e, index) => { %>
+        <article class="event-card" tabindex="0"
+          data-name="<%= (e.event_name || '').toLowerCase() %>"
+          data-location="<%= (e.location || '').toLowerCase() %>"
+          data-type="<%= e.event_type || 'General' %>"
+          data-title="<%= e.event_name %>"
+          data-date="<%= e.event_date %>"
+          data-location-full="<%= e.location %>"
+          data-desc="<%= (e.description || '').replace(/\n/g, ' ') %>"
+        >
+          <div class="event-date-badge">
+            <div class="date-day"><%= new Date(e.event_date).getDate() %></div>
+            <div class="date-month"><%= new Date(e.event_date).toLocaleString('default', { month: 'short' }) %></div>
+          </div>
 
+          <header class="event-card-header">
+            <div class="event-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="event-title-meta">
+              <h3 class="event-title"><%= e.event_name %></h3>
+              <span class="event-type-badge"><%= e.event_type || 'General' %></span>
+            </div>
+          </header>
+
+          <div class="event-content"><p class="event-description"><%= e.description %></p></div>
+
+          <div class="event-details">
+            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span><%= e.location %></span></div>
+            <div class="detail-item"><i class="fas fa-clock"></i><span><%= new Date(e.event_date).toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) %></span></div>
+            <div class="detail-item attendees"><i class="fas fa-users"></i><span><%= Math.floor(Math.random() * 150) + 20 %> Attending</span></div>
+          </div>
+
+          <footer class="event-card-footer">
+            <button class="btn-secondary btn-share"><i class="fas fa-share-alt"></i> Share</button>
+            <button class="btn-primary rsvp-btn"><i class="fas fa-check-circle"></i> RSVP</button>
+            <button class="btn-outline view-details-btn">View Details</button>
+          </footer>
+        </article>
+      <% }) %>
+    <% } %>
+  </section>
+
+  <!-- Event Detail Modal -->
+  <div id="eventModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <div class="modal-body">
+        <h2 id="modalTitle"></h2>
+        <div class="modal-meta"><span id="modalDate"></span> • <span id="modalLocation"></span></div>
+        <p id="modalDesc"></p>
+        <div class="modal-actions">
+          <button class="btn-primary modal-rsvp"><i class="fas fa-check-circle"></i> RSVP</button>
+          <button class="btn-secondary modal-share"><i class="fas fa-share-alt"></i> Share</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="events-summary">
+    <div class="summary-card"><div class="summary-icon"><i class="fas fa-calendar-days"></i></div><div class="summary-info"><div class="summary-number"><%= events ? events.length : 0 %></div><div class="summary-label">Upcoming Events</div></div></div>
+    <div class="summary-card"><div class="summary-icon"><i class="fas fa-users"></i></div><div class="summary-info"><div class="summary-number">5K+</div><div class="summary-label">Expected Attendees</div></div></div>
+    <div class="summary-card"><div class="summary-icon"><i class="fas fa-globe"></i></div><div class="summary-info"><div class="summary-number">15+</div><div class="summary-label">Cities</div></div></div>
+    <div class="summary-card"><div class="summary-icon"><i class="fas fa-star"></i></div><div class="summary-info"><div class="summary-number">4.8/5</div><div class="summary-label">Avg. Rating</div></div></div>
+  </section>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    // Elements
+    const eventSearchInput = document.getElementById('eventSearchInput');
+    const eventTypeFilter = document.getElementById('eventTypeFilter');
+    const eventStatusFilter = document.getElementById('eventStatusFilter');
+    const clearEventSearchBtn = document.getElementById('clearEventSearchBtn');
+    const resetEventFiltersBtn = document.getElementById('resetEventFiltersBtn');
+    const eventCards = document.querySelectorAll('.event-card');
+    const eventResultCount = document.getElementById('eventResultCount');
+
+    // Modal elements
+    const modal = document.getElementById('eventModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDate = document.getElementById('modalDate');
+    const modalLocation = document.getElementById('modalLocation');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalClose = document.querySelector('.modal-close');
+    const modalRSVP = document.querySelector('.modal-rsvp');
+
+    // Open modal with event data
+    function openModalFromCard(card) {
+      modalTitle.textContent = card.getAttribute('data-title');
+      modalDate.textContent = card.getAttribute('data-date');
+      modalLocation.textContent = card.getAttribute('data-location-full');
+      modalDesc.textContent = card.getAttribute('data-desc');
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    // Close modal
+    function closeModal() {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    // Attach click handlers
+    document.querySelectorAll('.view-details-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.event-card');
+        openModalFromCard(card);
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // RSVP and share toggles
+    document.querySelectorAll('.rsvp-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        btn.classList.toggle('rsvped');
+        btn.textContent = btn.classList.contains('rsvped') ? 'Going' : 'RSVP';
+      });
+    });
+
+    document.querySelectorAll('.btn-share').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.event-card');
+        const url = window.location.href + '#event-' + (card.dataset.name || '').replace(/\s+/g, '-');
+        navigator.clipboard && navigator.clipboard.writeText(url);
+        btn.textContent = 'Copied';
+        setTimeout(() => btn.innerHTML = '<i class="fas fa-share-alt"></i> Share', 1200);
+      });
+    });
+
+    // Filter function
+    function filterEvents() {
+      const searchTerm = eventSearchInput.value.toLowerCase();
+      const selectedType = eventTypeFilter.value;
+      let visibleCount = 0;
+      eventCards.forEach(card => {
+        const name = card.getAttribute('data-name') || '';
+        const location = card.getAttribute('data-location') || '';
+        const type = card.getAttribute('data-type') || '';
+        const matchesSearch = name.includes(searchTerm) || location.includes(searchTerm);
+        const matchesType = !selectedType || type === selectedType;
+        if (matchesSearch && matchesType) { card.style.display = 'block'; card.classList.add('fade-in'); visibleCount++; }
+        else card.style.display = 'none';
+      });
+      eventResultCount.innerHTML = `Showing <strong>${visibleCount}</strong> event${visibleCount !== 1 ? 's' : ''}`;
+    }
+
+    eventSearchInput.addEventListener('input', filterEvents);
+    eventTypeFilter.addEventListener('change', filterEvents);
+    clearEventSearchBtn.addEventListener('click', () => { eventSearchInput.value = ''; filterEvents(); eventSearchInput.focus(); });
+    resetEventFiltersBtn.addEventListener('click', () => { eventSearchInput.value = ''; eventTypeFilter.value = ''; eventStatusFilter.value = ''; filterEvents(); });
+
+    // Show/hide clear button
+    eventSearchInput.addEventListener('input', () => { clearEventSearchBtn.style.display = eventSearchInput.value ? 'block' : 'none'; });
+
+    // Initial animation
+    window.addEventListener('load', () => { eventCards.forEach((card, index) => setTimeout(() => card.classList.add('fade-in'), index * 50)); });
+  </script>
 </body>
 </html>

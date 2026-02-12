@@ -3,29 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Register | Alumni Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include("partials/header") %>
-<link rel="stylesheet" href="/css/style.css">
-<h2>Alumni Registration</h2>
 
-<form method="POST" action="/register">
-  <input type="text" name="name" placeholder="Full Name" required><br><br>
-  <input type="email" name="email" placeholder="Email" required><br><br>
-  <input type="password" name="password" placeholder="Password" required><br><br>
-  <input type="number" name="graduation_year" placeholder="Graduation Year" required><br><br>
-  <input type="text" name="department" placeholder="Department" required><br><br>
+  <main class="auth-page">
+    <div class="auth-card">
+      <aside class="auth-visual">
+        <h2>Join the Community</h2>
+        <p>Create your alumni profile to connect, share opportunities, and join events.</p>
+        <div class="brand-cta">It only takes a minute — be part of the network</div>
+      </aside>
 
-  <button type="submit">Register</button>
-</form>
+      <section class="auth-form">
+        <h3>Create Account</h3>
+        <p class="lead">Provide your details to get started.</p>
 
-<p>
-  Already registered?
-  <a href="/login">Login</a>
-</p>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="form-error"><%= error %></div>
+        <% } %>
 
-<%- include("partials/footer") %>
+        <form method="POST" action="/register" id="registerForm">
+          <div class="input-group">
+            <input id="name" name="name" type="text" placeholder="Full name" required>
+          </div>
 
+          <div class="input-group">
+            <input id="email" name="email" type="email" placeholder="Email address" required>
+          </div>
+
+          <div class="input-group" style="margin-top:6px;">
+            <input id="password" name="password" type="password" placeholder="Create a password" required>
+            <button type="button" class="password-toggle" aria-label="Toggle password"><i class="fas fa-eye"></i></button>
+          </div>
+
+          <div class="form-row" style="margin-top:6px;">
+            <div class="input-group">
+              <input id="graduation_year" name="graduation_year" type="number" placeholder="Graduation year (e.g. 2016)" required>
+            </div>
+            <div class="input-group">
+              <input id="department" name="department" type="text" placeholder="Department" required>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:10px; margin-top:8px;">
+            <label style="font-size:14px; color:#64748b;"><input type="checkbox" name="agree" required style="margin-right:8px;"> I agree to terms</label>
+          </div>
+
+          <div class="auth-actions">
+            <button class="btn-auth primary" type="submit">Create account</button>
+            <a class="btn-auth ghost" href="/login">Have an account?</a>
+          </div>
+        </form>
+
+        <div style="margin-top:12px;">
+          <div style="text-align:center; color:#94a3b8; font-size:13px;">Or join with</div>
+          <div class="social-login">
+            <button class="social-btn"><i class="fab fa-google"></i> Google</button>
+            <button class="social-btn"><i class="fab fa-github"></i> GitHub</button>
+          </div>
+        </div>
+
+        <div class="auth-foot">Already a member? <a href="/login">Sign in</a></div>
+      </section>
+    </div>
+  </main>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    (function(){
+      const pwd = document.getElementById('password');
+      const toggle = document.querySelector('.password-toggle');
+      toggle.addEventListener('click', () => {
+        const isPwd = pwd.getAttribute('type') === 'password';
+        pwd.setAttribute('type', isPwd ? 'text' : 'password');
+        toggle.innerHTML = isPwd ? '<i class="fas fa-eye-slash"></i>' : '<i class="fas fa-eye"></i>';
+      });
+
+      const form = document.getElementById('registerForm');
+      form.addEventListener('submit', (e) => {
+        const year = Number(document.getElementById('graduation_year').value);
+        if (isNaN(year) || year < 1950 || year > (new Date().getFullYear() + 2)) {
+          e.preventDefault();
+          alert('Please enter a valid graduation year.');
+          return false;
+        }
+      });
+    })();
+  </script>
 </body>
 </html>

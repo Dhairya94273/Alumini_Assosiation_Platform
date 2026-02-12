@@ -3,35 +3,238 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Alumni Directory | Find Your Network</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
   <%- include("partials/header") %>
 
-<h2>Alumni Directory</h2>
+  <!-- Directory Header -->
+  <section class="directory-header">
+    <h1>Alumni Directory</h1>
+    <p>Connect with <%= alumni ? alumni.length : 0 %> members of our alumni network</p>
+  </section>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Department</th>
-    <th>Graduation Year</th>
-    <th>Company</th>
-    <th>Location</th>
-  </tr>
+  <!-- Search & Filter Section -->
+  <section class="directory-controls">
+    <div class="search-container">
+      <i class="fas fa-search"></i>
+      <input 
+        type="text" 
+        id="searchInput" 
+        class="search-input" 
+        placeholder="Search by name, company, or department..."
+      >
+      <button class="clear-search" id="clearSearchBtn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
 
-  <% alumni.forEach(a => { %>
-    <tr>
-      <td><%= a.name %></td>
-      <td><%= a.department %></td>
-      <td><%= a.graduation_year %></td>
-      <td><%= a.company || "—" %></td>
-      <td><%= a.location || "—" %></td>
-    </tr>
-  <% }) %>
-</table>
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="departmentFilter">
+          <i class="fas fa-graduation-cap"></i> Department
+        </label>
+        <select id="departmentFilter" class="filter-select">
+          <option value="">All Departments</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Business">Business</option>
+          <option value="Medicine">Medicine</option>
+          <option value="Arts">Arts</option>
+          <option value="Science">Science</option>
+        </select>
+      </div>
 
-<%- include("partials/footer") %>
+      <div class="filter-group">
+        <label for="yearFilter">
+          <i class="fas fa-calendar"></i> Graduation Year
+        </label>
+        <select id="yearFilter" class="filter-select">
+          <option value="">All Years</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+          <option value="2019">2019</option>
+          <option value="2018">2018</option>
+        </select>
+      </div>
 
+      <button class="reset-filters" id="resetFiltersBtn">
+        <i class="fas fa-redo"></i> Reset
+      </button>
+    </div>
+  </section>
+
+  <!-- Results Info -->
+  <div class="results-info">
+    <span id="resultCount">Showing <strong><%= alumni ? alumni.length : 0 %></strong> members</span>
+  </div>
+
+  <!-- Alumni Cards Grid -->
+  <section class="alumni-grid" id="alumniGrid">
+    <% alumni.forEach((a, index) => { %>
+      <div class="alumni-card" data-name="<%= a.name.toLowerCase() %>" data-department="<%= a.department %>" data-year="<%= a.graduation_year %>" data-company="<%= (a.company || '').toLowerCase() %>">
+        <div class="card-header-alumni">
+          <div class="avatar">
+            <%= a.name.charAt(0).toUpperCase() %>
+          </div>
+          <div class="badge-year"><%= a.graduation_year %></div>
+        </div>
+
+        <div class="card-body-alumni">
+          <h3 class="alumni-name"><%= a.name %></h3>
+          
+          <div class="badge-department">
+            <i class="fas fa-graduation-cap"></i> <%= a.department %>
+          </div>
+
+          <div class="alumni-info">
+            <div class="info-item">
+              <i class="fas fa-briefcase"></i>
+              <span><%= a.company || "Looking for opportunities" %></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span><%= a.location || "Not specified" %></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer-alumni">
+          <a href="#" class="btn-small">
+            <i class="fas fa-envelope"></i> Connect
+          </a>
+          <a href="#" class="btn-small">
+            <i class="fas fa-share-alt"></i> Share
+          </a>
+        </div>
+      </div>
+    <% }) %>
+  </section>
+
+  <!-- No Results Message -->
+  <div id="noResults" class="no-results" style="display: none;">
+    <div class="no-results-content">
+      <i class="fas fa-search"></i>
+      <h3>No Alumni Found</h3>
+      <p>Try adjusting your search or filters</p>
+    </div>
+  </div>
+
+  <!-- Directory Stats -->
+  <section class="directory-stats">
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-users"></i></div>
+      <div class="stat-info">
+        <div class="stat-number"><%= alumni ? alumni.length : 0 %></div>
+        <div class="stat-label">Total Alumni</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-globe"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">45+</div>
+        <div class="stat-label">Countries</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-building"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">500+</div>
+        <div class="stat-label">Companies</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon"><i class="fas fa-star"></i></div>
+      <div class="stat-info">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Employed</div>
+      </div>
+    </div>
+  </section>
+
+  <%- include("partials/footer") %>
+
+  <script>
+    // Get all elements
+    const searchInput = document.getElementById('searchInput');
+    const departmentFilter = document.getElementById('departmentFilter');
+    const yearFilter = document.getElementById('yearFilter');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+    const alumniGrid = document.getElementById('alumniGrid');
+    const alumniCards = document.querySelectorAll('.alumni-card');
+    const noResults = document.getElementById('noResults');
+    const resultCount = document.getElementById('resultCount');
+
+    // Filter function
+    function filterAlumni() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedDept = departmentFilter.value;
+      const selectedYear = yearFilter.value;
+      let visibleCount = 0;
+
+      alumniCards.forEach(card => {
+        const name = card.getAttribute('data-name');
+        const dept = card.getAttribute('data-department');
+        const year = card.getAttribute('data-year');
+        const company = card.getAttribute('data-company');
+
+        const matchesSearch = name.includes(searchTerm) || 
+                            company.includes(searchTerm) || 
+                            dept.toLowerCase().includes(searchTerm);
+        const matchesDept = !selectedDept || dept === selectedDept;
+        const matchesYear = !selectedYear || year === selectedYear;
+
+        if (matchesSearch && matchesDept && matchesYear) {
+          card.style.display = 'block';
+          card.classList.add('fade-in');
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'flex' : 'none';
+      resultCount.innerHTML = `Showing <strong>${visibleCount}</strong> member${visibleCount !== 1 ? 's' : ''}`;
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', filterAlumni);
+    departmentFilter.addEventListener('change', filterAlumni);
+    yearFilter.addEventListener('change', filterAlumni);
+
+    // Clear search
+    clearSearchBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      filterAlumni();
+      searchInput.focus();
+    });
+
+    // Reset all filters
+    resetFiltersBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      departmentFilter.value = '';
+      yearFilter.value = '';
+      filterAlumni();
+    });
+
+    // Show/hide clear button
+    searchInput.addEventListener('input', () => {
+      clearSearchBtn.style.display = searchInput.value ? 'block' : 'none';
+    });
+
+    // Initial animation
+    window.addEventListener('load', () => {
+      alumniCards.forEach((card, index) => {
+        setTimeout(() => {
+          card.classList.add('fade-in');
+        }, index * 50);
+      });
+    });
+  </script>
 </body>
 </html>
